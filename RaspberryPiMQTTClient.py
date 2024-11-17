@@ -6,16 +6,16 @@ import json
 SENSOR = Adafruit_DHT.DHT11
 GPIO_PIN = 4
 
-BROKEN_ADRESS = "IP_DO_BROKER_BITDOGLAB"
-TOPIC - "bitdoglab/raspberry/dados"
+BROKER_ADRESS = "IP_DO_BROKER_BITDOGLAB"
+TOPIC = "bitdoglab/raspberry/dados"
 
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
-        print("Conectado ao broker no bitdoglab!")
+        print("Conectado ao broker no BitDogLab!")
     else:
-        print(f"erro de conexão com broker: {rc}")
+        print(f"Erro de conexão com o broker: {rc}")
 
-ckient = mqtt.Client("RaspberryPi_RealData")
+client = mqtt.Client("RaspberryPi_RealData")
 client.on_connect = on_connect
 client.connect(BROKER_ADRESS)
 
@@ -30,16 +30,16 @@ try:
                 "umidade": humidity
             }
             message = json.dumps(data)
-
-            client.publish(topic, message)
-            print(f"dados reais enviados: {nessage}")
+            client.publish(TOPIC, message)
+            print(f"Dados reais enviados: {message}")
         else:
-            print("falha na leitura do sensor. retransmitindo...")
+            print("Falha na leitura do sensor. Tentando novamente...")
 
         time.sleep(10)
 
 except KeyboardInterrupt:
-    print("encerrando...")
+    print("Encerrando...")
+
 finally:
     client.loop_stop()
     client.disconnect()
